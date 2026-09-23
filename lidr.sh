@@ -16,7 +16,7 @@
 set -u
 
 STATE_DIR="$HOME/.local/state/omarchy/toggles"
-PID_FILE="$STATE_DIR/nosleep.pid"
+PID_FILE="$STATE_DIR/lidr.pid"
 WHY="Keep the laptop running with the lid closed"
 
 is_active() {
@@ -32,7 +32,7 @@ start() {
   setsid systemd-inhibit \
     --what=handle-lid-switch:sleep \
     --mode=block \
-    --who="No Sleep" \
+    --who="Lidr" \
     --why="$WHY" \
     sleep infinity >/dev/null 2>&1 &
   disown

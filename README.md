@@ -1,6 +1,6 @@
-# No Sleep
+# Lidr
 
-![No Sleep bar states: off, off while hovered, and on](screenshots/states.png)
+![Lidr bar states: off, off while hovered, and on](screenshots/states.png)
 
 An [Omarchy](https://omarchy.org/) shell plugin that adds a bar toggle for
 keeping your laptop running while the lid is closed — useful for things like
@@ -22,14 +22,14 @@ session) keeps making progress.
 ## Install
 
 ```
-omarchy plugin add https://github.com/jsprada/nosleep.git --enable
+omarchy plugin add https://github.com/jsprada/lidr.git --enable
 ```
 
 Or clone manually and enable it yourself:
 
 ```
-git clone https://github.com/jsprada/nosleep.git ~/.config/omarchy/plugins/nosleep
-omarchy plugin enable nosleep
+git clone https://github.com/jsprada/lidr.git ~/.config/omarchy/plugins/lidr
+omarchy plugin enable lidr
 ```
 
 ## How it works
@@ -40,7 +40,7 @@ Enabling the toggle spawns a detached
 systemd-inhibit --what=handle-lid-switch:sleep --mode=block sleep infinity
 ```
 
-process and tracks its PID in `~/.local/state/omarchy/toggles/nosleep.pid`.
+process and tracks its PID in `~/.local/state/omarchy/toggles/lidr.pid`.
 That's a real logind inhibitor lock: it blocks suspend outright (`sleep`) and
 also tells logind not to run its own automatic lid-close handling
 (`handle-lid-switch`), so it holds regardless of which path would otherwise
@@ -48,19 +48,19 @@ trigger a suspend. Because it's a detached process (via `setsid`), it survives
 Quickshell/omarchy-shell restarts. Disabling the toggle kills that process
 group, which releases the lock.
 
-The bar widget itself (`NoSleep.qml`) just polls `nosleep.sh --status`
-and calls `nosleep.sh --toggle` on click — all state lives in that one
+The bar widget itself (`Lidr.qml`) just polls `lidr.sh --status`
+and calls `lidr.sh --toggle` on click — all state lives in that one
 script, so nothing needs a background service.
 
 It's also scriptable over Omarchy's shell IPC:
 
 ```
-omarchy-shell nosleep status
-omarchy-shell nosleep toggle
+omarchy-shell lidr status
+omarchy-shell lidr toggle
 ```
 
 ## Uninstall
 
 ```
-omarchy plugin remove nosleep
+omarchy plugin remove lidr
 ```

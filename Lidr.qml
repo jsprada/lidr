@@ -4,17 +4,17 @@ import Quickshell.Io
 import qs.Ui
 
 // Bar toggle that keeps the laptop running while the lid is closed.
-// See nosleep.sh for how the actual inhibitor lock is held.
+// See lidr.sh for how the actual inhibitor lock is held.
 BarWidget {
   id: root
-  moduleName: "nosleep"
+  moduleName: "lidr"
 
   property bool stayingAwake: false
 
   // Resolves next to this file regardless of what directory name the plugin
   // is installed under.
   readonly property string scriptPath: {
-    var url = Qt.resolvedUrl("nosleep.sh").toString()
+    var url = Qt.resolvedUrl("lidr.sh").toString()
     return url.indexOf("file://") === 0 ? decodeURIComponent(url.slice(7)) : url
   }
 
@@ -64,7 +64,7 @@ BarWidget {
   }
 
   IpcHandler {
-    target: "nosleep"
+    target: "lidr"
 
     function status(): string {
       return JSON.stringify({ active: root.stayingAwake })

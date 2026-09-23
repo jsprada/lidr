@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "nosleep",
-  "name": "No Sleep",
+  "id": "lidr",
+  "name": "Lidr",
   "version": "1.0.0",
   "author": "Johnny Sprada",
   "description": "Bar toggle that keeps the laptop running (no suspend) while the lid is closed",
@@ -9,10 +9,10 @@
     "bar-widget"
   ],
   "entryPoints": {
-    "barWidget": "NoSleep.qml"
+    "barWidget": "Lidr.qml"
   },
   "barWidget": {
-    "displayName": "No Sleep",
+    "displayName": "Lidr",
     "description": "Toggle whether the laptop suspends when the lid is closed. Lit when enabled (lid close won't suspend), dimmed when disabled (normal suspend-on-lid-close behavior).",
     "category": "Status",
     "allowMultiple": false,
