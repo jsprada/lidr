@@ -34,19 +34,20 @@ omarchy plugin enable lidr
 
 ## How it works
 
-Enabling the toggle spawns a detached
+Enabling the toggle starts a transient systemd user unit, `lidr.service`,
+that runs
 
 ```
 systemd-inhibit --what=handle-lid-switch:sleep --mode=block sleep infinity
 ```
 
-process and tracks its PID in `~/.local/state/omarchy/toggles/lidr.pid`.
 That's a real logind inhibitor lock: it blocks suspend outright (`sleep`) and
 also tells logind not to run its own automatic lid-close handling
 (`handle-lid-switch`), so it holds regardless of which path would otherwise
-trigger a suspend. Because it's a detached process (via `setsid`), it survives
-Quickshell/omarchy-shell restarts. Disabling the toggle kills that process
-group, which releases the lock.
+trigger a suspend. Because the unit belongs to your systemd user manager
+rather than to the shell, it survives Quickshell/omarchy-shell restarts.
+Disabling the toggle stops the unit, which releases the lock. Everything is
+addressed by unit name, so there is no PID file to go stale.
 
 The bar widget itself (`Lidr.qml`) just polls `lidr.sh --status`
 and calls `lidr.sh --toggle` on click — all state lives in that one
