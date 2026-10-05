@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "lidr",
   "name": "Lidr",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Johnny Sprada",
   "description": "Bar toggle that keeps the laptop running (no suspend) while the lid is closed",
   "kinds": [

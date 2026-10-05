@@ -60,8 +60,41 @@ omarchy-shell lidr status
 omarchy-shell lidr toggle
 ```
 
+## Optional: keyboard fix for lid close without suspend
+
+On some laptops (seen on a ThinkPad), closing the lid *without* suspending
+can leave the internal keyboard dead after you open it again. The touchpad
+still works, but the kernel stops receiving keystrokes until the i8042
+keyboard controller is reset or the machine reboots. A normal suspend/resume
+resets the controller, so this only happens while Lidr is on.
+
+To reset the controller automatically on lid open while Lidr is on, run
+this once from a terminal (it asks for sudo):
+
+```
+~/.config/omarchy/plugins/lidr/keyboard-fix/install.sh
+```
+
+It installs:
+
+- `/usr/local/bin/i8042-reset`: unbinds and rebinds the i8042 driver.
+- `/etc/sudoers.d/lidr-i8042-reset`: a passwordless sudo rule for that
+  helper only.
+- `~/.local/bin/lidr-lid-open`: runs Omarchy's normal lid-open handler,
+  then resets the keyboard if `lidr.service` is active.
+- A block in `~/.config/hypr/bindings.lua`, between
+  `-- >>> lidr keyboard fix >>>` markers, that points
+  `switch:off:Lid Switch` at the handler.
+
+The keyboard is unavailable for about 3 seconds after each lid open while
+Lidr is on. Each reset is logged to `~/.local/state/lidr/lid-open.log`.
+
+Remove it with `keyboard-fix/install.sh --uninstall`. Removing the plugin
+does **not** remove the fix, so uninstall the fix first.
+
 ## Uninstall
 
 ```
+~/.config/omarchy/plugins/lidr/keyboard-fix/install.sh --uninstall  # if installed
 omarchy plugin remove lidr
 ```

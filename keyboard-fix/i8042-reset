@@ -1,0 +1,19 @@
+#!/bin/bash
+# Re-initialise the i8042 (PS/2) keyboard controller. Installed as
+# /usr/local/bin/i8042-reset by lidr's keyboard-fix/install.sh and run as root
+# via a NOPASSWD sudoers rule.
+#
+# The serio port is renumbered on every rebind (serio0 -> serio1 -> ...), so
+# find it by description. The reconnect is best effort; the driver
+# unbind/bind is the real reset.
+
+set -u
+
+for port in /sys/bus/serio/devices/serio*; do
+  [[ $(cat "$port/description" 2>/dev/null) == "i8042 KBD port" ]] || continue
+  echo -n reconnect >"$port/drvctl" 2>/dev/null
+done
+sleep 1
+echo -n i8042 >/sys/bus/platform/drivers/i8042/unbind
+sleep 1
+echo -n i8042 >/sys/bus/platform/drivers/i8042/bind
